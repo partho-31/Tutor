@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from users.managers import CustomUserManager
 from cloudinary.models import CloudinaryField
+from django.conf import settings
 
 class User(AbstractUser):
     Teacher = 'Teacher'
@@ -21,7 +22,7 @@ class User(AbstractUser):
     bio = models.TextField(blank=True, null=True)
     qualifications = models.TextField(blank=True, null=True)
     experience = models.CharField(max_length=200,default="Student" ,blank=True, null=True)
-    image = CloudinaryField('image',blank=True, null=True)
+    image = CloudinaryField('image',default=f'{settings.MEDIA_URL}default/profile.png')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
