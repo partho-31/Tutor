@@ -22,7 +22,7 @@ class User(AbstractUser):
     bio = models.TextField(blank=True, null=True)
     qualifications = models.TextField(blank=True, null=True)
     experience = models.CharField(max_length=200,default="Student" ,blank=True, null=True)
-    image = CloudinaryField('image',default='https://res.cloudinary.com/dinzf10l3/image/upload/v1746932275/profile_pozuuv.png')
+    image = CloudinaryField('image',default='profile_pozuuv')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
