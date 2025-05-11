@@ -7,7 +7,7 @@ from teachers.serializers import ForProfileTuitionSerializer
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
-    image= serializers.ImageField()
+    image= serializers.ImageField(required=False, allow_null=True)
     class Meta(UserCreateSerializer.Meta):
         fields = ['first_name','last_name','password','email','address','phone_number','role','image']
 
