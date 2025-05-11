@@ -1,16 +1,19 @@
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer,UserSerializer
-from users.models import User
+from users.models import User,ProfileInfo
 from teachers.models import Applicant,StudentsOfTeacher
 from teachers.serializers import ForProfileTuitionSerializer
 
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
-    image= serializers.ImageField(required=False, allow_null=True)
     class Meta(UserCreateSerializer.Meta):
-        fields = ['first_name','last_name','password','email','address','phone_number','role','image']
+        fields = ['first_name','last_name','password','email','address','phone_number','role']
 
+    def create(self, validated_data):
+        user = super().create(validated_data)
+        ProfileInfo.objects.create(user=user)
+        return user
 
 
 class CustomUserSerializer(UserSerializer):
@@ -19,7 +22,7 @@ class CustomUserSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ['id','first_name','last_name','email','address','phone_number','image','applied_tuition','approved_tuition']
+        fields = ['id','first_name','last_name','email','address','phone_number','applied_tuition','approved_tuition']
 
     def check_applied_tuition(self, obj):
         applicants = Applicant.objects.select_related('tuition').filter(user=obj) 
@@ -41,6 +44,10 @@ class ThirdPartySerializer(serializers.Serializer):
 
 
 
-
+class ProfileSerializer(serializers.Serializer):
+    image = serializers.ImageField(required = False, allow_null=True)
+    class Meta:
+        model = ProfileInfo
+        fields = ['institute','profession','bio','qualifications','experience','image']
 
 

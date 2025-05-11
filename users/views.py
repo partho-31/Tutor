@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from users.models import User
-from users.serializers import CustomUserSerializer,CustomUserCreateSerializer
+from users.serializers import CustomUserSerializer,CustomUserCreateSerializer,ProfileSerializer
 from rest_framework.decorators import api_view
 from drf_yasg.utils import swagger_auto_schema
 from sslcommerz_lib import SSLCOMMERZ 
@@ -133,3 +133,12 @@ def PaymentCancel(request):
 @api_view(['POST',])
 def PaymentFailed(request):
     return HttpResponse(f'{main_settings.FRONTEND_URL}/payment/failed/')
+
+
+@api_view(['PATCH'])
+def update_profile(request):
+    profile = request.user.profile
+    serializer = ProfileSerializer(profile, data=request.data, partial=True)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data)

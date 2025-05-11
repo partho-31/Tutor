@@ -17,13 +17,7 @@ class User(AbstractUser):
     address = models.CharField(max_length= 200, blank= True, null= True)
     phone_number = models.CharField(max_length= 15, blank= True, null= True)
     role = models.CharField(max_length=8, choices= STATUS_CHOICES, default= 'Student')
-    institute = models.CharField(max_length=200, blank=True, null=True)
-    profession = models.CharField(max_length=100, blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
-    qualifications = models.TextField(blank=True, null=True)
-    experience = models.CharField(max_length=200,default="Student" ,blank=True, null=True)
-    image = CloudinaryField('image',default='profile_pozuuv',blank=True, null=True)
-
+   
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -32,3 +26,13 @@ class User(AbstractUser):
     def __str__(self):
         return self.get_full_name()
     
+
+class ProfileInfo(models.Model):
+    institute = models.CharField(max_length=200, blank=True, null=True)
+    profession = models.CharField(max_length=100, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    qualifications = models.TextField(blank=True, null=True)
+    experience = models.CharField(max_length=200,default="Student" ,blank=True, null=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')
+    image= CloudinaryField('image',default='profile_pozuuv',blank=True,null=True)
+
