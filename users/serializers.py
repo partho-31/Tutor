@@ -20,10 +20,25 @@ class CustomUserSerializer(UserSerializer):
     applied_tuition = serializers.SerializerMethodField(method_name= 'check_applied_tuition')
     approved_tuition = serializers.SerializerMethodField(method_name= 'check_approved_tuition')
 
+    profile_info = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id','first_name','last_name','email','address','phone_number','applied_tuition','approved_tuition']
+        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition')
 
+    def get_profile_info(self, obj):
+        profile = ProfileInfo.objects.get(user=obj)
+        return {
+            'institute': profile.institute,
+            'profession': profile.profession,
+            'bio': profile.bio,
+            'qualifications': profile.qualifications,
+            'experience': profile.experience,
+            'image': profile.image.url if profile.image else None
+        }
+
+
+   
     def check_applied_tuition(self, obj):
         applicants = Applicant.objects.select_related('tuition').filter(user=obj) 
         return ThirdPartySerializer(applicants,many=True).data
@@ -51,3 +66,4 @@ class ProfileSerializer(serializers.Serializer):
         fields = ['institute','profession','bio','qualifications','experience','image']
 
 
+ 
