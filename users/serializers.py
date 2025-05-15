@@ -8,7 +8,7 @@ from teachers.serializers import ForProfileTuitionSerializer
 
 class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
-        fields = ['first_name','last_name','password','email','address','phone_number','role','institute','profession']
+        fields = ['first_name','last_name','password','email','address','phone_number','role','institute','profession','bio','qualifications','experience']
 
     def create(self, validated_data):
         user = super().create(validated_data)
@@ -24,14 +24,11 @@ class CustomUserSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition','institute','profession')
+        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition','institute','profession','bio','qualifications','experience')
 
     def get_profile_info(self, obj):
         profile = ProfileInfo.objects.get(user=obj)
         return {
-            'bio': profile.bio,
-            'qualifications': profile.qualifications,
-            'experience': profile.experience,
             'image': profile.image.url if profile.image else None
         }
 
