@@ -135,7 +135,7 @@ def PaymentFailed(request):
     return HttpResponse(f'{main_settings.FRONTEND_URL}/payment/failed/')
 
 
-@api_view(['PATCH'])
+@api_view(['POST'])
 def update_profile(request):
     profile = request.user.profile
     serializer = ProfileSerializer(profile, data=request.data,files=request.FILES, partial=True)

@@ -58,10 +58,10 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = ProfileInfo
         fields = ['image']
 
-    def update(self, instance, validated_data):
-        instance.image = validated_data.get('image',instance.image)
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+#         instance.image = validated_data.get('image',instance.image)
+        # instance.save()
+        # return instance
 
 
  
