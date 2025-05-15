@@ -1,6 +1,6 @@
 from django.urls import path,include
 from teachers.views import TeacherViewSet,TuitionViewSet,ReviewViewSet,ApplicantViewSet,StudentOfTeacherViewSet,StudentsProgressViewSet
-from users.views import StudentViewSet,PaymentInitiate,PaymentSuccess,PaymentCancel,PaymentFailed,update_profile
+from users.views import StudentViewSet,PaymentInitiate,PaymentSuccess,PaymentCancel,PaymentFailed
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
@@ -30,6 +30,6 @@ urlpatterns = [
     path('payment/success/',PaymentSuccess, name= 'payment-success'),
     path('payment/cancel/',PaymentCancel, name= 'payment-cancel'),
     path('payment/failed/',PaymentFailed, name= 'payment-failed'),
-    path('profile/update/',update_profile,name= 'profile-update') 
+    # path('profile/update/',update_profile,name= 'profile-update') 
     
 ]
