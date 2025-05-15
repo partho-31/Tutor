@@ -8,7 +8,7 @@ from teachers.serializers import ForProfileTuitionSerializer
 
 class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
-        fields = ['first_name','last_name','password','email','address','phone_number','role']
+        fields = ['first_name','last_name','password','email','address','phone_number','role','institute','profession']
 
     def create(self, validated_data):
         user = super().create(validated_data)
@@ -24,13 +24,11 @@ class CustomUserSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition')
+        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition','institute','profession')
 
     def get_profile_info(self, obj):
         profile = ProfileInfo.objects.get(user=obj)
         return {
-            'institute': profile.institute,
-            'profession': profile.profession,
             'bio': profile.bio,
             'qualifications': profile.qualifications,
             'experience': profile.experience,
@@ -63,7 +61,7 @@ class ProfileSerializer(serializers.Serializer):
     image = serializers.ImageField(required = False, allow_null=True)
     class Meta:
         model = ProfileInfo
-        fields = ['institute','profession','bio','qualifications','experience','image']
+        fields = ['bio','qualifications','experience','image']
 
 
  
