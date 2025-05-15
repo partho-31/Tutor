@@ -29,7 +29,7 @@ class CreateTuitionSerializer(serializers.ModelSerializer):
     image = serializers.ImageField()
     class Meta:
         model = Tuition
-        fields = ['title','teacher','description','classes','subjects','availability','image']
+        fields = ['title','teacher','description','classes','subjects','availability','image','sub_title','duration']
         read_only_fields = ['teacher']
 
 
@@ -39,7 +39,7 @@ class TuitionSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Tuition
-        fields = ['id','teacher','title','description','classes','subjects','availability','image']
+        fields = ['id','teacher','title','description','classes','subjects','availability','image','sub_title','duration']
 
     def get_teacher_details(self,obj):
         return obj.teacher.first_name
