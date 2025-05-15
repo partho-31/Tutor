@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from users.models import User
+from users.models import User,ProfileInfo
 
 class CustomUserAdmin(UserAdmin):
     model = User
@@ -11,7 +11,7 @@ class CustomUserAdmin(UserAdmin):
         (None,{'fields':('email','password')}),
         ('Personal Info',{'fields':(
             'first_name','last_name','address','phone_number','role','institute',
-            'profession','bio','qualifications','experience','image'
+            'profession','bio','qualifications','experience',
             )}),
         ('Permissions',{'fields':('is_active','is_staff','is_superuser','groups','user_permissions')}),
         ('Important Dates',{'fields':('last_login','date_joined')})
@@ -29,6 +29,6 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 admin.site.register(User, CustomUserAdmin)
-# admin.site.register(ProfileInfo)
+admin.site.register(ProfileInfo)
 
 

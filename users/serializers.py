@@ -1,37 +1,35 @@
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer,UserSerializer
-from users.models import User
+from users.models import User,ProfileInfo
 from teachers.models import Applicant,StudentsOfTeacher
 from teachers.serializers import ForProfileTuitionSerializer
 
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
-    image = serializers.ImageField(required = False, allow_null=True)
     class Meta(UserCreateSerializer.Meta):
-        fields = ['first_name','last_name','password','email','address','phone_number','role','institute','profession','bio','qualifications','experience','image']
+        fields = ['first_name','last_name','password','email','address','phone_number','role','institute','profession','bio','qualifications','experience']
 
-    # def create(self, validated_data):
-    #     user = super().create(validated_data)
-    #     ProfileInfo.objects.create(user=user)
-    #     return user
+    def create(self, validated_data):
+        user = super().create(validated_data)
+        ProfileInfo.objects.create(user=user)
+        return user
 
 
 class CustomUserSerializer(UserSerializer):
     applied_tuition = serializers.SerializerMethodField(method_name= 'check_applied_tuition')
     approved_tuition = serializers.SerializerMethodField(method_name= 'check_approved_tuition')
 
-    # profile_info = serializers.SerializerMethodField()
+    profile_info = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition','institute','profession','bio','qualifications','experience','image')
-
-    # def get_profile_info(self, obj):
-    #     profile = ProfileInfo.objects.get(user=obj)
-    #     return {
-    #         'image': profile.image.url if profile.image else None
-    #     }
+        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition','institute','profession','bio','qualifications','experience')
+    def get_profile_info(self, obj):
+        profile = ProfileInfo.objects.get(user=obj)
+        return {
+            'image': profile.image.url if profile.image else None
+        }
 
 
    
@@ -55,11 +53,11 @@ class ThirdPartySerializer(serializers.Serializer):
 
 
 
-# class ProfileSerializer(serializers.Serializer):
-#     image = serializers.ImageField(required = False, allow_null=True)
-#     class Meta:
-#         model = ProfileInfo
-#         fields = ['bio','qualifications','experience','image']
+class ProfileSerializer(serializers.Serializer):
+    image = serializers.ImageField(required = False, allow_null=True)
+    class Meta:
+        model = ProfileInfo
+        fields = ['image']
 
 
  
