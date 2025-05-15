@@ -138,7 +138,7 @@ def PaymentFailed(request):
 @api_view(['PATCH'])
 def update_profile(request):
     profile = request.user.profile
-    serializer = ProfileSerializer(profile, data=request.data, partial=True)
+    serializer = ProfileSerializer(profile, data=request.data,files=request.FILES, partial=True)
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data)
