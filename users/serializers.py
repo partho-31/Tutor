@@ -52,12 +52,16 @@ class ThirdPartySerializer(serializers.Serializer):
         return ForProfileTuitionSerializer(obj.tuition).data
 
 
-
-class ProfileSerializer(serializers.Serializer):
+class ProfileSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required = False, allow_null=True)
     class Meta:
         model = ProfileInfo
         fields = ['image']
+
+    def update(self, instance, validated_data):
+        instance.image = validated_data.get('image',instance.image)
+        instance.save()
+        return instance
 
 
  
