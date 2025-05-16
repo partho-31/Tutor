@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from drf_yasg.utils import swagger_auto_schema
 from sslcommerz_lib import SSLCOMMERZ 
 from rest_framework.response import Response
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.conf import settings as main_settings
 
 
@@ -122,17 +122,17 @@ def PaymentInitiate(request):
 
 @api_view(['POST',])
 def PaymentSuccess(request):
-    return HttpResponse(f'{main_settings.FRONTEND_URL}/payment/success/')  
+    return HttpResponseRedirect(f'{main_settings.FRONTEND_URL}/payment/success/')  
 
 
 @api_view(['POST',])
 def PaymentCancel(request):
-    return HttpResponse(f'{main_settings.FRONTEND_URL}/payment/cancel/')  
+    return HttpResponseRedirect(f'{main_settings.FRONTEND_URL}/payment/cancel/')  
 
 
 @api_view(['POST',])
 def PaymentFailed(request):
-    return HttpResponse(f'{main_settings.FRONTEND_URL}/payment/failed/')
+    return HttpResponseRedirect(f'{main_settings.FRONTEND_URL}/payment/failed/')
 
 
 @api_view(['POST'])
