@@ -25,12 +25,12 @@ class CustomUserSerializer(UserSerializer):
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition','institute','profession','bio','qualifications','experience')
+    
     def get_profile_info(self, obj):
         profile = ProfileInfo.objects.get(user=obj)
         return {
             'image': profile.image.url if profile.image else None
         }
-
 
    
     def check_applied_tuition(self, obj):
@@ -58,10 +58,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = ProfileInfo
         fields = ['image']
 
-    # def update(self, instance, validated_data):
-#         instance.image = validated_data.get('image',instance.image)
-        # instance.save()
-        # return instance
+
 
 
  
