@@ -20,7 +20,7 @@ class CustomUserSerializer(UserSerializer):
     applied_tuition = serializers.SerializerMethodField(method_name= 'check_applied_tuition')
     approved_tuition = serializers.SerializerMethodField(method_name= 'check_approved_tuition')
 
-    profile_info = serializers.SerializerMethodField()
+    profile_info = serializers.SerializerMethodField(method_name='get_profile_info')
 
     class Meta:
         model = User

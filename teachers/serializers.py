@@ -1,13 +1,12 @@
 from rest_framework import serializers
 from teachers.models import Tuition,Review,Applicant,StudentsOfTeacher,Progress
-from users.models import User
-# from users.serializers import ProfileSerializer
+from users.models import User,ProfileInfo
 
 
 
 class TeacherSerializer(serializers.ModelSerializer):
     provided_tuitions = serializers.SerializerMethodField(method_name= 'get_all_tuitions')
-    # image = serializers.SerializerMethodField(method_name= 'get_profile_img')
+    profile = serializers.SerializerMethodField(method_name= 'get_profile_info')
     class Meta:
         model = User
         fields = ['id','first_name','last_name','email','address','phone_number','provided_tuitions','experience','institute','profession','bio','qualifications','profile']
@@ -16,8 +15,11 @@ class TeacherSerializer(serializers.ModelSerializer):
         tuition = Tuition.objects.filter(teacher_id= obj.id)
         return ForProfileTuitionSerializer(tuition, many=True).data
 
-    # def get_profile_img(self,obj):
-    #     return ProfileSerializer(obj).data
+    def get_profile_info(self, obj):
+        profile = ProfileInfo.objects.get(user=obj)
+        return {
+            'image': profile.image.url if profile.image else None
+        }
 
 
 class ForProfileTuitionSerializer(serializers.Serializer):
