@@ -25,7 +25,7 @@ class Tuition(models.Model):
     teacher = models.ForeignKey(User, on_delete= models.CASCADE, related_name= 'tuition')
     fee = models.PositiveBigIntegerField(default= 499, blank=False, null=False)
     outcomes = models.TextField()
-    image = CloudinaryField('image')
+    image = CloudinaryField('image',blank=False, null=False)
 
 
     def __str__(self):
