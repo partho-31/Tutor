@@ -49,8 +49,7 @@ class TuitionSerializer(serializers.ModelSerializer):
         fields = ['id','teacher','title','description','classes','subjects','availability','image','sub_title','duration','course_content','fee','outcomes']
 
     def get_teacher_details(self,obj):
-        return TeacherSerializer(obj).data
-
+        return TeacherSerializer(obj.teacher).data
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -71,12 +70,10 @@ class ApplicantSerializer(serializers.ModelSerializer):
         fields = ['id','user','tuition']
 
 
-
 class StudentofTeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentsOfTeacher
         fields = ['id','user','tuition']
-
 
 
 class ProgressOfStudentSerializer(serializers.ModelSerializer):
