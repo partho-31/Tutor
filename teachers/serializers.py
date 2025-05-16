@@ -4,6 +4,7 @@ from users.models import User,ProfileInfo
 
 
 
+
 class TeacherSerializer(serializers.ModelSerializer):
     provided_tuitions = serializers.SerializerMethodField(method_name= 'get_all_tuitions')
     profile = serializers.SerializerMethodField(method_name= 'get_profile_info')
@@ -48,7 +49,7 @@ class TuitionSerializer(serializers.ModelSerializer):
         fields = ['id','teacher','title','description','classes','subjects','availability','image','sub_title','duration','course_content','fee','outcomes']
 
     def get_teacher_details(self,obj):
-        return obj.teacher.first_name
+        return TeacherSerializer(obj).data
 
 
 
