@@ -27,7 +27,7 @@ urlpatterns = [
     path('',include(student_router.urls)),
     path('',include(progress_router.urls)),
     path('payment/initiate',PaymentInitiate, name= 'payment-initiate'),
-    path('payment/success/',PaymentSuccess, name= 'payment-success'),
+    path('payment/success/<int:id>/',PaymentSuccess, name= 'payment-success'),
     path('payment/cancel/',PaymentCancel, name= 'payment-cancel'),
     path('payment/failed/',PaymentFailed, name= 'payment-failed'),
     path('profile/update/',update_profile,name= 'profile-update') 

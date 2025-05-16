@@ -81,6 +81,7 @@ class StudentViewSet(ModelViewSet):
 def PaymentInitiate(request):
     user = request.user
     amount = request.data.get('amount')
+    id = request.data['tuition_id']
 
     settings = { 
         'store_id': 'homet681c8efac4942', 
@@ -93,7 +94,7 @@ def PaymentInitiate(request):
     post_body['total_amount'] = amount
     post_body['currency'] = "BDT"
     post_body['tran_id'] = f'tnx_DF3SH4HJ89EC8D{user.id}'
-    post_body['success_url'] = f"{main_settings.BACKEND_URL}/api/payment/success/"
+    post_body['success_url'] = f"{main_settings.BACKEND_URL}/api/payment/success/{id}/"
     post_body['fail_url'] = f"{main_settings.BACKEND_URL}/api/payment/failed/"
     post_body['cancel_url'] = f"{main_settings.BACKEND_URL}/api/payment/cancel/"
     post_body['emi_option'] = 0
@@ -112,7 +113,6 @@ def PaymentInitiate(request):
 
 
     response = sslcz.createSession(post_body) 
-    
     if response.get('status') == 'SUCCESS':
         return Response({'payment_url' : response.get('GatewayPageURL')})
     else:  
@@ -121,8 +121,10 @@ def PaymentInitiate(request):
 
 
 @api_view(['POST',])
-def PaymentSuccess(request):
-    return HttpResponseRedirect(f'{main_settings.FRONTEND_URL}/payment/success/')  
+def PaymentSuccess(request,id):
+    print(request.data)
+    print(id)
+    return HttpResponseRedirect(f'{main_settings.FRONTEND_URL}/payment/success/{id}')  
 
 
 @api_view(['POST',])
