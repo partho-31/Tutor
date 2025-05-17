@@ -24,7 +24,7 @@ class CustomUserSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition','institute','profession','bio','qualifications','experience')
+        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'profile_info','applied_tuition','approved_tuition','institute','profession','bio','qualifications','experience','role')
     
     def get_profile_info(self, obj):
         profile = ProfileInfo.objects.get(user=obj)
