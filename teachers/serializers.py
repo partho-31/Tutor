@@ -53,10 +53,15 @@ class TuitionSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField("get_user_details")
     class Meta:
         model = Review
         fields = ['id','user','comment','rating']
         read_only_fields = ['user']
+
+    def get_user_details(self,obj):
+        from users.serializers import CustomUserSerializer
+        return CustomUserSerializer(obj.user).data
 
     def create(self, validated_data):
         tuition = Tuition.objects.get(id = self.context.get('tuition_id'))
