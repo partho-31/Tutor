@@ -207,7 +207,7 @@ class ReviewViewSet(ModelViewSet):
 class ApplicantViewSet(ModelViewSet):
     http_method_names = ['get','delete']
     serializer_class = ApplicantSerializer
-    permission_classes = [OnlyForTeacher]
+ 
 
     def get_queryset(self):
         return Applicant.objects.filter(tuition_id= self.kwargs.get('tuition_pk'))
