@@ -70,9 +70,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class ApplicantSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField("get_user_details")
     class Meta:
         model = Applicant
         fields = ['id','user','tuition']
+
+    def get_user_details(self,obj):
+        from users.serializers import CustomUserSerializer
+        return CustomUserSerializer(obj.user).data
 
 
 class StudentofTeacherSerializer(serializers.ModelSerializer):
