@@ -8,6 +8,8 @@ from sslcommerz_lib import SSLCOMMERZ
 from rest_framework.response import Response
 from django.http import HttpResponseRedirect
 from django.conf import settings as main_settings
+import uuid
+from teachers.models import Tuition
 
 
 
@@ -101,7 +103,7 @@ def PaymentInitiate(request):
     post_body = {}
     post_body['total_amount'] = amount
     post_body['currency'] = "BDT"
-    post_body['tran_id'] = f'tnx_DF3SH4HJ89EC8D{user.id}'
+    post_body['tran_id'] = f'tnx_{uuid.uuid4().hex}'
     post_body['success_url'] = f"{main_settings.BACKEND_URL}/api/payment/success/{id}/"
     post_body['fail_url'] = f"{main_settings.BACKEND_URL}/api/payment/failed/"
     post_body['cancel_url'] = f"{main_settings.BACKEND_URL}/api/payment/cancel/"
@@ -135,11 +137,14 @@ def PaymentInitiate(request):
 
 @api_view(['POST',])
 def PaymentSuccess(request,id):
+    tuition_id = id
+    tuition = Tuition.objects.get(id=tuition_id)
     tran_id = request.data.get('tran_id')
     payment = Payment.objects.get(tran_id=tran_id) 
     payment.status = 'Success'
+    payment.tuition = tuition
     payment.save()      
-    return HttpResponseRedirect(f'{main_settings.FRONTEND_URL}/payment/success/{id}')  
+    return HttpResponseRedirect(f'{main_settings.FRONTEND_URL}/payment/success/{tuition_id}')  
 
 
 @api_view(['POST',])

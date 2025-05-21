@@ -2,7 +2,7 @@ from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer,UserSerializer
 from users.models import User,ProfileInfo,Payment
 from teachers.models import Applicant,StudentsOfTeacher
-from teachers.serializers import ForProfileTuitionSerializer
+from teachers.serializers import ForProfileTuitionSerializer,TuitionSerializer
 
 
 
@@ -62,12 +62,16 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class PaymentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(method_name= 'get_user')
+    tuition = serializers.SerializerMethodField(method_name= 'get_tuition')
     class Meta:
         model = Payment
-        fields = ['user','tran_id','amount','status','created_at' ]
+        fields = ['user','tran_id','amount','status','tuition','created_at' ]
 
     def get_user(self,obj):
         return CustomUserSerializer(obj.user).data
+
+    def get_tuition(self,obj):
+        return TuitionSerializer(obj.tuition).data
 
 
 

@@ -4,6 +4,8 @@ from users.managers import CustomUserManager
 from cloudinary.models import CloudinaryField
 from django.conf import settings
 
+
+
 class User(AbstractUser):
     Teacher = 'Teacher'
     Student = 'Student'
@@ -44,7 +46,8 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tran_id = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=50,default='Pending')
+    status = models.CharField(max_length=50, default='Pending')
+    tuition = models.ForeignKey('teachers.Tuition',on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
