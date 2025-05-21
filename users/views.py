@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAdminUser,IsAuthenticated
-from users.models import User,Payment
-from users.serializers import CustomUserSerializer,CustomUserCreateSerializer,ProfileSerializer,PaymentSerializer
+from rest_framework.permissions import IsAdminUser
+from users.models import User
+from users.serializers import CustomUserSerializer,CustomUserCreateSerializer,ProfileSerializer
 from rest_framework.decorators import api_view
 from drf_yasg.utils import swagger_auto_schema
 from sslcommerz_lib import SSLCOMMERZ 
@@ -75,16 +75,24 @@ class StudentViewSet(ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 
-class PaymentViewSet(ModelViewSet):
-    serializer_class = PaymentSerializer
-    permission_classes = [IsAuthenticated]
-    http_method_names = ['GET','POST']
+# class PaymentViewSet(ModelViewSet):
+    # serializer_class = PaymentSerializer
+    # permission_classes = [IsAuthenticated]
+    # http_method_names = ['GET','POST']
 
-    def get_queryset(self):
-        return Payment.objects.filter(user=self.request.user).order_by('-created_at')
+    # def get_queryset(self):
+        # return Payment.objects.filter(user=self.request.user).order_by('-created_at')
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    # def perform_create(self, serializer):
+        # serializer.save(user=self.request.user)
+
+    # @swagger_auto_schema(operation_summary="Retrive the payment history of a user")
+    # def retrieve(self, request, *args, **kwargs):
+        # return super().retrieve(request, *args, **kwargs)
+
+    # @swagger_auto_schema(operation_summary='Create the payment history after successful payment')
+    # def create(self, request, *args, **kwargs):
+        # return super().create(request, *args, **kwargs)
 
 
 
@@ -133,16 +141,16 @@ def PaymentInitiate(request):
 
 @api_view(['POST',])
 def PaymentSuccess(request,id):
-    user = request.user 
-    tran_id = request.data.get('tran_id')
-    amount = request.data.get('amount')
+    # user = request.user 
+    # tran_id = request.data.get('tran_id')
+    # amount = request.data.get('amount')
 
-    Payment.objects.create(
-    user=user,
-    tran_id=tran_id,
-    amount=amount,
-    status='Success'
-    )
+    # Payment.objects.create(
+    # user=user,
+    # tran_id=tran_id,
+    # amount=amount,
+    # status='Success'
+    # )
     
     return HttpResponseRedirect(f'{main_settings.FRONTEND_URL}/payment/success/{id}')  
 
