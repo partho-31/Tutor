@@ -119,6 +119,11 @@ def PaymentInitiate(request):
     post_body['product_category'] = "General"
     post_body['product_profile'] = "general"
 
+    Payment.objects.create(
+    user=user,
+    tran_id=post_body['tran_id'],
+    amount=amount,
+    )
 
     response = sslcz.createSession(post_body) 
     if response.get('status') == 'SUCCESS':
@@ -130,17 +135,10 @@ def PaymentInitiate(request):
 
 @api_view(['POST',])
 def PaymentSuccess(request,id):
-    user = request.user 
     tran_id = request.data.get('tran_id')
-    amount = request.data.get('amount')
-
-    Payment.objects.create(
-    user=user,
-    tran_id=tran_id,
-    amount=amount,
-    status='Success'
-    )
-    
+    payment = Payment.objects.get(tran_id=tran_id) 
+    payment.status = 'Success'
+    payment.save()      
     return HttpResponseRedirect(f'{main_settings.FRONTEND_URL}/payment/success/{id}')  
 
 

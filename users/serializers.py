@@ -64,7 +64,7 @@ class PaymentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(method_name= 'get_user')
     class Meta:
         model = Payment
-        fields = ['user','tran_id','amount','created_at' ]
+        fields = ['user','tran_id','amount','status','created_at' ]
 
     def get_user(self,obj):
         return CustomUserSerializer(obj.user).data
