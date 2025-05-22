@@ -39,7 +39,7 @@ class ProfileInfo(models.Model):
     image= CloudinaryField('image',default='profile_pozuuv',blank=True,null=True)
 
     def __str__(self):
-        return self.user
+        return self.user.email
 
 
 class Payment(models.Model):
