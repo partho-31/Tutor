@@ -22,7 +22,6 @@ class StudentViewSet(ModelViewSet):
     """
     queryset = User.objects.filter(role = 'Student')
     serializer_class = CustomUserSerializer
-    permission_classes = [IsAdminUser]
 
     
     @swagger_auto_schema(

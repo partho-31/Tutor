@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from teachers.models import Tuition,Review,Applicant,StudentsOfTeacher,Progress
+from teachers.models import Tuition,Review,Applicant,StudentsOfTeacher,Progress,Blogs
 from users.models import User,ProfileInfo
-
 
 
 
@@ -89,4 +88,27 @@ class StudentofTeacherSerializer(serializers.ModelSerializer):
 class ProgressOfStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Progress
-        fields = ['id','topics_for_this_week','topics','assignment','topics_completed','student_progress','user']
+        fields = ['id','topics_for_this_week','topics','assignment','topics_completed','student_progress','user'] 
+
+
+
+class BlogsSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False)
+    author = serializers.SerializerMethodField(method_name= 'get_author')
+    class Meta:
+        model = Blogs
+        fields = ['id','heading','description','image','created_at','author']
+
+    def get_author(self,obj):
+        from users.serializers import CustomUserSerializer
+        return CustomUserSerializer(obj.author).data
+    
+
+class CreateBlogsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blogs
+        fields = ['heading','description','image','topic']
+
+
+
+        

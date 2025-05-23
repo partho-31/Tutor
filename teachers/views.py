@@ -7,8 +7,8 @@ from api.paginations import CustomPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from users.models import User
-from teachers.models import Tuition,Review,Applicant,StudentsOfTeacher,Progress
-from teachers.serializers import TeacherSerializer,TuitionSerializer,CreateTuitionSerializer,ReviewSerializer,ApplicantSerializer,StudentofTeacherSerializer,ProgressOfStudentSerializer
+from teachers.models import Tuition,Review,Applicant,StudentsOfTeacher,Progress,Blogs 
+from teachers.serializers import TeacherSerializer,TuitionSerializer,CreateTuitionSerializer,ReviewSerializer,ApplicantSerializer,StudentofTeacherSerializer,ProgressOfStudentSerializer,CreateBlogsSerializer,BlogsSerializer
 
 
 class TeacherViewSet(ModelViewSet):
@@ -270,3 +270,18 @@ class StudentsProgressViewSet(ModelViewSet):
     def get_queryset(self):
         tuition = Tuition.objects.get(id = self.kwargs.get('tuition_pk'))
         return Progress.objects.filter(tuition = tuition)
+    
+
+
+class BlogsViewSet(ModelViewSet):
+    queryset = Blogs.objects.prefetch_related('author').all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['topic','heading']
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.request.method == 'POST':
+            return CreateBlogsSerializer
+        return BlogsSerializer 
+    
+    def perform_create(self, serializer):
+        serializer.save(author= self.request.user)

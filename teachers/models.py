@@ -88,3 +88,15 @@ class Progress(models.Model):
 
     user = models.OneToOneField(User, on_delete= models.CASCADE, related_name= 'progress')
     tuition = models.ForeignKey(Tuition, on_delete= models.CASCADE, related_name= 'progress')
+
+
+class Blogs(models.Model):
+    author = models.ForeignKey(User,on_delete= models.CASCADE, related_name='blog')
+    topic = models.CharField(max_length=150)
+    heading = models.CharField(max_length=200, blank= False, null= False)
+    description = models.TextField(blank=False,null=False)
+    image = CloudinaryField('image', default='default_for_blogs_aqpckm', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.heading 
