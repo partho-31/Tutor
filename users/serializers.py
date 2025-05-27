@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer,UserSerializer
-from users.models import User,ProfileInfo,Payment
+from users.models import User,ProfileInfo,Payment,Contact
 from teachers.models import Applicant,StudentsOfTeacher
 from teachers.serializers import ForProfileTuitionSerializer,TuitionSerializer
 
@@ -75,5 +75,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 
 
-
- 
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = '__all__'

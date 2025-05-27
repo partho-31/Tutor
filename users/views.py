@@ -1,15 +1,15 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAdminUser
-from users.models import User,Payment
-from users.serializers import CustomUserSerializer,CustomUserCreateSerializer,ProfileSerializer,PaymentSerializer
+from users.models import User,Payment,Contact
+from users.serializers import CustomUserSerializer,CustomUserCreateSerializer,ProfileSerializer,PaymentSerializer,ContactSerializer
 from rest_framework.decorators import api_view
 from drf_yasg.utils import swagger_auto_schema
 from sslcommerz_lib import SSLCOMMERZ 
 from rest_framework.response import Response
 from django.http import HttpResponseRedirect
 from django.conf import settings as main_settings
-import uuid
 from teachers.models import Tuition
+from django.core.mail import send_mail
+import uuid
 
 
 
@@ -163,3 +163,24 @@ def update_profile(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data)
+
+
+class ContactViewSet(ModelViewSet):
+    metadata_class = ['GET','DELETE']
+    serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        name = request.data.get('name')
+        email = request.data.get('email')
+
+        subject = "Thanks for contacting us at EduPoint!"
+        message_body = f"Hi {name}, \nThanks for reaching out to us at SkillSpark! We’ve received your message and will get back to you as soon as possible.\n\nIf your inquiry is urgent, feel free to reply to this email directly.\n\nBest regards,\nThe EduPoint Team"
+        send_mail(
+            subject,
+            message_body,
+            main_settings.EMAIL_HOST_USER,           
+            [email],
+        )
+
+        return super().create(request, *args, **kwargs)

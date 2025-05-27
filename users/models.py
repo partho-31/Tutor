@@ -51,4 +51,15 @@ class Payment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.email
+        return self.user.email  
+    
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100, blank=False, null=False)
+    email = models.EmailField(blank=False, null=False)
+    phone = models.CharField(max_length=15, blank=False, null=False)
+    message = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.email
+    
