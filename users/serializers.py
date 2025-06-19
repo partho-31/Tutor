@@ -74,9 +74,8 @@ class PaymentSerializer(serializers.ModelSerializer):
         return TuitionSerializer(obj.tuition).data
 
 
-
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
-        fields = ['name','email','phone','message','date']
+        fields = ['id','name','email','phone','message','date']
         read_only_fields = ['date']
