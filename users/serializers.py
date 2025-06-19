@@ -78,4 +78,5 @@ class PaymentSerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
-        fields = '__all__'
+        fields = ['name','email','phone','message','date']
+        read_only_fields = ['date']
