@@ -80,7 +80,11 @@ class StudentViewSet(ModelViewSet):
 @api_view(['GET'])
 def PaymentHistory(request):
     user = request.user
-    payment = Payment.objects.filter(user=user)
+    payment = []
+    if user.is_staff :
+        payment = Payment.objects.all()
+    else :
+        payment = Payment.objects.filter(user=user)
     serializer = PaymentSerializer(payment,many=True)
     return Response(serializer.data)
 
