@@ -91,7 +91,7 @@ class TuitionViewSet(ModelViewSet):
     permission_classes = [IsAdminOrTeacherOrReadOnly]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['subjects','classes','teacher']
-    pagination_class = CustomPagination
+    # pagination_class = CustomPagination
 
 
     def get_serializer_class(self):
